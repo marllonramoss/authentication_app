@@ -1,45 +1,52 @@
-import { UserDTO } from "../dtos/UserDTO";
-import { User } from "../model/User";
-import port_idGenerator from "../providers/port_idGenerator";
-import { port_userRepo } from "../providers/port_userRepo";
-import {port_passwordHasher} from '../providers/port_passwordHasher'
+import { UserDTO } from '../dtos/UserDTO';
+import { User } from '../model/User';
+import port_idGenerator from '../providers/port_idGenerator';
+import { port_userRepo } from '../providers/port_userRepo';
+import { port_passwordHasher } from '../providers/port_passwordHasher';
 
 export class useCase_register {
-    constructor(private readonly repo: port_userRepo  ,private readonly idGenerator: port_idGenerator, private readonly hasher: port_passwordHasher){}
+    constructor(
+        private readonly repo: port_userRepo,
+        private readonly idGenerator: port_idGenerator,
+        private readonly hasher: port_passwordHasher,
+    ) {}
 
     async execute(user: User): Promise<UserDTO> {
+        console.log('data joinned on useCase', user);
 
-        if(!user.password) {
-            throw new Error('Password is required!')
+        if (!user.password) {
+            throw new Error('Password is required!');
         }
 
-        if(!user.email) {
-            throw new Error('Email is required!')
+        if (!user.email) {
+            throw new Error('Email is required!');
         }
 
-        const emailExisting = await this.repo.findByEmail(user.email)
+        const emailExisting = await this.repo.findByEmail(user.email);
 
-        if(emailExisting) {
-            throw new Error('User email has already been used')
+        if (emailExisting) {
+            throw new Error('User email has already been used');
         }
 
         const finalUser: User = {
             ...user,
-            id: this.idGenerator.generate(),
+            id: await this.idGenerator.generate(),
             password: this.hasher.hash(user.password),
-            createdAt: new Date()
-        }
+            createdAt: new Date(),
+        };
 
-        await this.repo.save(finalUser)
+        console.log('USER BEFORE GO TO DB');
+
+        console.log(finalUser);
+
+        await this.repo.save(finalUser);
 
         const userToReturn: UserDTO = {
             id: finalUser.id,
             email: finalUser.email,
-            createdAt: finalUser.createdAt
-            
-        }
+            createdAt: finalUser.createdAt,
+        };
 
-        return userToReturn
-
+        return userToReturn;
     }
 }
