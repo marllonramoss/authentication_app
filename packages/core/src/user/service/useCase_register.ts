@@ -12,8 +12,6 @@ export class useCase_register {
     ) {}
 
     async execute(user: User): Promise<UserDTO> {
-        console.log('data joinned on useCase', user);
-
         if (!user.password) {
             throw new Error('Password is required!');
         }
@@ -34,10 +32,6 @@ export class useCase_register {
             password: this.hasher.hash(user.password),
             createdAt: new Date(),
         };
-
-        console.log('USER BEFORE GO TO DB');
-
-        console.log(finalUser);
 
         await this.repo.save(finalUser);
 
