@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
 const Dashboard = () => {
-  const { user } = useAuthContext();
+  const { user, logout } = useAuthContext();
   const router = useRouter();
 
   // Verificar se o usuário está logado
@@ -21,9 +21,15 @@ const Dashboard = () => {
   }
 
   return (
-    <div>
-      <span>Dashboard</span>
+    <div className="h-screen bg-indigo-600/60 flex justify-center items-center flex-col">
+      <span className="text-zinc-50 bg-zinc-950 p-2">Welcome to Dashboard</span>
       <span>{user?.email}</span>
+      <button
+        className="bg-zinc-950 text-zinc-50 p-2 rounded-xl"
+        onClick={() => logout()}
+      >
+        Logout
+      </button>
     </div>
   );
 };
