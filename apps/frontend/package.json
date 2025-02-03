@@ -9,8 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@authentication/core": "*",
+    "@tabler/icons-react": "^3.29.0",
     "@types/axios": "^0.14.4",
+    "@types/js-cookie": "^3.0.6",
+    "@types/jwt-decode": "^3.1.0",
     "axios": "^1.7.9",
+    "js-cookie": "^3.0.5",
+    "jwt-decode": "^4.0.0",
     "next": "15.1.6",
     "nookies": "^2.5.2",
     "react": "^19.0.0",

@@ -9,7 +9,10 @@ import { port_passwordHasher } from './providers/port_passwordHasher';
 import { port_tokenGenerator } from './providers/port_tokenGenerator';
 import { port_userRepo } from './providers/port_userRepo';
 
-import { UserDTO } from './dtos/UserDTO';
+import { registerOutDTO } from './dtos/registerOutDTO';
+import { registerInDTO } from './dtos/registerInDTO';
+import loginOutDTO from './dtos/loginOutDTO';
+import loginInDTO from './dtos/loginInDTO';
 
 export type {
     User,
@@ -17,6 +20,9 @@ export type {
     port_passwordHasher,
     port_tokenGenerator,
     port_userRepo,
-    UserDTO,
+    registerInDTO,
+    registerOutDTO,
+    loginInDTO,
+    loginOutDTO,
 };
 export { useCase_login, useCase_register, useCase_registerWithGoogle };

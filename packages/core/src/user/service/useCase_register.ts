@@ -1,8 +1,9 @@
-import { UserDTO } from '../dtos/UserDTO';
-import { User } from '../model/User';
 import port_idGenerator from '../providers/port_idGenerator';
-import { port_userRepo } from '../providers/port_userRepo';
 import { port_passwordHasher } from '../providers/port_passwordHasher';
+import { registerOutDTO } from '../dtos/registerOutDTO';
+import { registerInDTO } from '../dtos/registerInDTO';
+import { port_userRepo } from '../providers/port_userRepo';
+import { User } from '../model/User';
 
 export class useCase_register {
     constructor(
@@ -11,36 +12,38 @@ export class useCase_register {
         private readonly hasher: port_passwordHasher,
     ) {}
 
-    async execute(user: User): Promise<UserDTO> {
-        if (!user.password) {
+    async execute(data: registerInDTO): Promise<registerOutDTO> {
+        if (!data.password) {
             throw new Error('Password is required!');
         }
 
-        if (!user.email) {
+        if (!data.email) {
             throw new Error('Email is required!');
         }
 
-        const emailExisting = await this.repo.findByEmail(user.email);
+        const emailExisting = await this.repo.findByEmail(data.email);
 
         if (emailExisting) {
             throw new Error('User email has already been used');
         }
 
-        const finalUser: User = {
-            ...user,
+        const finaldata: User = {
+            ...data,
             id: await this.idGenerator.generate(),
-            password: this.hasher.hash(user.password),
+            password: this.hasher.hash(data.password),
             createdAt: new Date(),
         };
 
-        await this.repo.save(finalUser);
+        await this.repo.save(finaldata);
 
-        const userToReturn: UserDTO = {
-            id: finalUser.id,
-            email: finalUser.email,
-            createdAt: finalUser.createdAt,
+        const dataToReturn: registerOutDTO = {
+            statusCode: 201,
+            message: 'Register successful',
+            id: finaldata.id,
+            email: finaldata.email,
+            createdAt: finaldata.createdAt,
         };
 
-        return userToReturn;
+        return dataToReturn;
     }
 }

@@ -1,4 +1,3 @@
-import { UserDTO } from '../dtos/UserDTO';
 import { UserGoogleDTO } from '../dtos/UserGoogleDTO';
 import { User } from '../model/User';
 import port_idGenerator from '../providers/port_idGenerator';

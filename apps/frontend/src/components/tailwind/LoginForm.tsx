@@ -1,10 +1,11 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { useContext } from "react";
 import { useAuthContext } from "@/hooks/useAuthContext";
+import Link from "next/link";
+import { IconLockSquareRoundedFilled } from "@tabler/icons-react";
 
-export default function Example() {
+export default function LoginForm() {
   const { register, handleSubmit } = useForm();
 
   const { login } = useAuthContext();
@@ -17,11 +18,13 @@ export default function Example() {
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <img
-          alt="Your Company"
-          src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-          className="mx-auto h-10 w-auto"
-        />
+        <div className="flex justify-center items-center -mb-2">
+          <IconLockSquareRoundedFilled
+            size={58}
+            className="text-indigo-600"
+            stroke={10}
+          />
+        </div>
         <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
           Sign in to your account
         </h2>
@@ -64,7 +67,7 @@ export default function Example() {
               </label>
               <div className="text-sm">
                 <a
-                  href="#"
+                  href="/recovery"
                   className="font-semibold text-indigo-600 hover:text-indigo-500"
                 >
                   Forgot password?
@@ -84,13 +87,19 @@ export default function Example() {
             </div>
           </div>
 
-          <div>
+          <div className="flex justify-center items-center flex-col gap-5">
             <button
               type="submit"
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Sign in
             </button>
+
+            <Link href={"/register"}>
+              <span className="text-gray-900 hover:text-gray-600">
+                Don't have an account? Create one
+              </span>
+            </Link>
           </div>
         </form>
       </div>

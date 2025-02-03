@@ -1,3 +1,3 @@
 export interface port_tokenGenerator {
-    generate(id: string): string
+    generate(id: string, email: string, createdAt: Date): string;
 }

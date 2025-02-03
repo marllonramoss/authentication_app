@@ -1,12 +1,12 @@
 "use client";
 
 import LoadingScreen from "@/components/shared/LoadingScreen";
-import LoginForm from "@/components/tailwind/LoginForm";
+import RegisterForm from "@/components/tailwind/RegisterForm";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
-const Login = () => {
+const Register = () => {
   const auth = useAuthContext();
   const router = useRouter();
 
@@ -26,9 +26,9 @@ const Login = () => {
 
   return (
     <div className="w-full h-screen bg-white">
-      <LoginForm />
+      <RegisterForm />
     </div>
   );
 };
 
-export default Login;
+export default Register;
