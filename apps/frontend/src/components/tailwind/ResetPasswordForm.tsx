@@ -2,13 +2,9 @@
 
 import { useForm } from "react-hook-form";
 import { useAuthContext } from "@/hooks/useAuthContext";
-import Link from "next/link";
-import {
-  IconLockSquareRoundedFilled,
-  IconCircleArrowLeftFilled,
-} from "@tabler/icons-react";
+import { IconLockSquareRoundedFilled } from "@tabler/icons-react";
 
-export default function RecoveryForm() {
+export default function ResetPasswordForm() {
   const { register, handleSubmit } = useForm();
 
   const { recovery } = useAuthContext();
@@ -29,7 +25,7 @@ export default function RecoveryForm() {
           />
         </div>
         <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
-          Send Recovery Email
+          Create a new password
         </h2>
       </div>
 
@@ -45,16 +41,35 @@ export default function RecoveryForm() {
               htmlFor="email"
               className="block text-sm/6 font-medium text-gray-900  "
             >
-              Email address
+              Password
             </label>
             <div className="mt-2">
               <input
-                {...register("email")}
-                id="email"
-                name="email"
-                type="email"
+                {...register("password")}
+                id="password"
+                name="password"
+                type="password"
                 required
-                autoComplete="email"
+                autoComplete="password"
+                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 ring-1 ring-gray-400"
+              />
+            </div>
+          </div>
+          <div className="">
+            <label
+              htmlFor="email"
+              className="block text-sm/6 font-medium text-gray-900  "
+            >
+              Confirm Password
+            </label>
+            <div className="mt-2">
+              <input
+                {...register("password")}
+                id="password"
+                name="password"
+                type="password"
+                required
+                autoComplete="password"
                 className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6 ring-1 ring-gray-400"
               />
             </div>
@@ -65,15 +80,8 @@ export default function RecoveryForm() {
               type="submit"
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
-              Send recovery email
+              Done
             </button>
-
-            <Link href={"/login"}>
-              <span className="text-gray-900 hover:text-gray-600 flex gap-2">
-                <IconCircleArrowLeftFilled />
-                Go back to Login
-              </span>
-            </Link>
           </div>
         </form>
       </div>

@@ -18,6 +18,8 @@ interface AuthContextType {
   loading: boolean;
   login: (credentials: { email: string; password: string }) => Promise<any>;
   register: (data: registerInDTO) => Promise<registerOutDTO>;
+  recovery: (data: { email: string }) => Promise<void>;
+  change_password: (token: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -130,9 +132,39 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setLoading(false);
   };
 
+  const recovery = async (data: { email: string }) => {
+    try {
+      console.log("start recovey context");
+
+      const response = await axios.post(`${baseUrl}/auth/recovery`, {
+        email: data.email,
+      });
+    } catch (error) {
+      console.log("ERRO revorey context");
+      console.log(data.email);
+    }
+  };
+
+  const change_password = async (token: string) => {
+    const payload = await jwtDecode(token);
+    console.log(payload);
+    if (payload) {
+      try {
+        const response = await axios.post(`${baseUrl}/auth/change_password`);
+      } catch (error) {}
+    }
+  };
   return (
     <AuthContext.Provider
-      value={{ user: sessao.user, loading, login, register, logout }}
+      value={{
+        user: sessao.user,
+        loading,
+        login,
+        register,
+        logout,
+        recovery,
+        change_password,
+      }}
     >
       {children}
     </AuthContext.Provider>
