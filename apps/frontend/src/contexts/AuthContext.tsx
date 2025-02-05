@@ -10,6 +10,8 @@ import {
 } from "@authentication/core";
 import cookie from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import { Sankofa_Display } from "next/font/google";
+import { addAbortSignal } from "stream";
 
 const baseUrl = "http://localhost:4000";
 
@@ -19,9 +21,15 @@ interface AuthContextType {
   login: (credentials: { email: string; password: string }) => Promise<any>;
   register: (data: registerInDTO) => Promise<registerOutDTO>;
   recovery: (data: { email: string }) => Promise<void>;
-  change_password: (token: string) => Promise<void>;
+  change_password: (token: string, newPassword: string) => Promise<void>;
   logout: () => void;
 }
+
+type payloadProps = {
+  exp: Date;
+  iat: Date;
+  id: string;
+};
 
 export const AuthContext = createContext<AuthContextType | undefined>(
   undefined
@@ -145,15 +153,45 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
-  const change_password = async (token: string) => {
-    const payload = await jwtDecode(token);
-    console.log(payload);
+  const change_password = async (token: string, newPassword: string) => {
+    console.log("START CHANGE PASSORD METHOT OF CONTEXT");
+
+    const payload: payloadProps = await jwtDecode(token);
+    console.log("ante sdo payloay");
+
+    const currentTime = Math.floor(Date.now() / 1000); // Obtém o tempo atual em segundos
+
+    const isTokenValid = +payload.exp > currentTime;
+
+    if (!isTokenValid) {
+      console.log("Token invalid - Data expired");
+
+      throw new Error("Token invalid - Data expired");
+    }
+
+    console.log(payload.id);
+
+    const id = payload.id;
+
+    const correctData = {
+      id,
+      newPassword,
+    };
+
+    console.log("LOG DO DATA DO CONTEXT");
+    console.log(correctData);
+
     if (payload) {
       try {
-        const response = await axios.post(`${baseUrl}/auth/change_password`);
+        const response = await axios.post(
+          `${baseUrl}/auth/change-password`,
+          correctData
+        );
+        router.push("/login");
       } catch (error) {}
     }
   };
+
   return (
     <AuthContext.Provider
       value={{

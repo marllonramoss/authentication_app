@@ -23,7 +23,7 @@ export class useCase_recovery {
         const recoveryToken = this.tokenGenerator.generate(existingEmail.id);
 
         // Envia o email com o link de recuperação de senha
-        const recoveryLink = `https://seusite.com/redefinir-senha?token=${recoveryToken}`;
+        const recoveryLink = `http://localhost:3000/reset-password?token=${recoveryToken}`;
 
         await this.emailService.sendRecoveryEmail(data.email, recoveryLink);
 

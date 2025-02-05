@@ -4,13 +4,17 @@ import { useForm } from "react-hook-form";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { IconLockSquareRoundedFilled } from "@tabler/icons-react";
 
-export default function ResetPasswordForm() {
+type ResetPasswordFormProps = {
+  token: string;
+};
+
+export default function ResetPasswordForm({ token }: ResetPasswordFormProps) {
   const { register, handleSubmit } = useForm();
 
-  const { recovery } = useAuthContext();
+  const { change_password } = useAuthContext();
 
-  async function handleRecovery(data: any) {
-    recovery(data);
+  async function handleChange_Password(data: any) {
+    change_password(token, data.password);
     return;
   }
 
@@ -34,7 +38,7 @@ export default function ResetPasswordForm() {
           action="#"
           method="POST"
           className="space-y-6"
-          onSubmit={handleSubmit(handleRecovery)}
+          onSubmit={handleSubmit(handleChange_Password)}
         >
           <div className="">
             <label
@@ -64,7 +68,7 @@ export default function ResetPasswordForm() {
             </label>
             <div className="mt-2">
               <input
-                {...register("password")}
+                // {...register("password")}
                 id="password"
                 name="password"
                 type="password"
