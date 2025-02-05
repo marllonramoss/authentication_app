@@ -19,7 +19,7 @@ interface AuthContextType {
   user: session["user"];
   loading: boolean;
   login: (credentials: { email: string; password: string }) => Promise<any>;
-  register: (data: registerInDTO) => Promise<registerOutDTO>;
+  register: (data: registerIn) => Promise<registerOutDTO | object>;
   recovery: (data: { email: string }) => Promise<void>;
   change_password: (token: string, newPassword: string) => Promise<void>;
   logout: () => void;
@@ -45,6 +45,12 @@ type session = {
     email: string;
     createdAt: Date;
   } | null;
+};
+
+type registerIn = {
+  email: string;
+  password: string;
+  confirm_password: string;
 };
 
 export function AuthProvider({ children }: AuthProviderProps) {
@@ -101,32 +107,68 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setLoading(true);
     try {
       const response = await axios.post(`${baseUrl}/auth/login`, credentials);
+
+      // Verifica se o token está presente na resposta
       if (!response.data.token) throw new Error("Token not found!");
 
+      // Armazena o token em cookies
       cookie.set(cookieName, response.data.token, { expires: 7 });
       setSessao(obterSessao());
       router.push("/dashboard");
 
       return response.data;
     } catch (error) {
-      console.error("Erro no login:", error);
-      throw error;
+      // Captura o erro e exibe a mensagem apropriada
+      if (axios.isAxiosError(error) && error.response) {
+        // Verifica se a resposta contém uma mensagem de erro
+        alert(error.response.data.message || "Error on login."); // Exibe a mensagem de erro ao usuário
+      } else {
+        alert("Ocorreu um erro inesperado. Por favor, tente novamente."); // Mensagem genérica
+      }
+
+      return {
+        statusCode: 400,
+        message: "Credentials invalid",
+      };
     } finally {
       setLoading(false);
     }
   };
 
-  const register = async (data: registerInDTO): Promise<registerOutDTO> => {
+  const register = async (
+    data: registerIn
+  ): Promise<registerOutDTO | object> => {
+    console.log("register context started");
+
     setLoading(true);
+
+    const passwordsOk = data.confirm_password === data.password;
+
+    if (!passwordsOk) {
+      setLoading(false);
+      alert("Password and Confirm Password needs to be equal!");
+      return {
+        message: "MESSAGE ERRO RETURNS",
+      };
+    }
+
     try {
+      console.log(data);
+
       const response = await axios.post(`${baseUrl}/auth/register`, data);
       if (response.data.statusCode === 201) {
         await login(data);
       }
       return response.data;
     } catch (error) {
-      console.error("Erro no registro:", error);
-      throw error;
+      if (axios.isAxiosError(error) && error.message) {
+        alert(error.response?.data.message || "Error on Register");
+      }
+
+      return {
+        statusCode: 400,
+        message: "Credentials invalid",
+      };
     } finally {
       setLoading(false);
     }
@@ -147,9 +189,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const response = await axios.post(`${baseUrl}/auth/recovery`, {
         email: data.email,
       });
+
+      alert(
+        `If email ${data.email} is a valid email, we was sended a recovery mail!`
+      );
     } catch (error) {
-      console.log("ERRO revorey context");
-      console.log(data.email);
+      alert(
+        `If email ${data.email} is a valid email, we was sended a recovery mail!`
+      );
     }
   };
 
