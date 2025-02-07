@@ -4,11 +4,21 @@ import LoadingScreen from "@/components/shared/LoadingScreen";
 import LoginForm from "@/components/tailwind/LoginForm";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 const Login = () => {
   const auth = useAuthContext();
   const router = useRouter();
+
+  const [googleData, setGoogleData] = useState<Object | null>(null);
+
+  useEffect(() => {
+    if (googleData !== null) {
+      console.log(googleData);
+
+      // router.push("/passou");
+    }
+  }, [googleData]);
 
   useEffect(() => {
     if (auth.user) {
@@ -26,7 +36,7 @@ const Login = () => {
 
   return (
     <div className="w-full h-screen bg-white">
-      <LoginForm />
+      <LoginForm setGoogleData={setGoogleData} />
     </div>
   );
 };

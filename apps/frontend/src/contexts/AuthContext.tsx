@@ -23,6 +23,7 @@ interface AuthContextType {
   recovery: (data: { email: string }) => Promise<void>;
   change_password: (token: string, newPassword: string) => Promise<void>;
   logout: () => void;
+  loginWithGoogle: () => void;
 }
 
 type payloadProps = {
@@ -239,6 +240,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
+  const loginWithGoogle = () => {
+    window.location.href = `${baseUrl}/auth/google`;
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -249,6 +254,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         logout,
         recovery,
         change_password,
+        loginWithGoogle,
       }}
     >
       {children}
