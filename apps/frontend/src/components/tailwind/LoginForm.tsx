@@ -3,12 +3,29 @@
 import { useForm } from "react-hook-form";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import Link from "next/link";
-import { IconLockSquareRoundedFilled } from "@tabler/icons-react";
+import {
+  IconLockSquareRoundedFilled,
+  IconBrandGoogle,
+} from "@tabler/icons-react";
+import { useGoogleLogin } from "@react-oauth/google";
+import { useState } from "react";
 
-export default function LoginForm() {
+type LoginFormProps = {
+  setGoogleData(data: object): void;
+};
+
+export default function LoginForm({ setGoogleData }: LoginFormProps) {
   const { register, handleSubmit } = useForm();
 
   const { login } = useAuthContext();
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: (tokenResponse) => setGoogleData(tokenResponse),
+  });
+
+  const handleLoginWithGoogle = () => {
+    googleLogin();
+  };
 
   async function handleSignIn(data: any) {
     login(data);
@@ -93,6 +110,12 @@ export default function LoginForm() {
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             >
               Sign in
+            </button>
+            <button
+              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 gap-2"
+              onClick={() => handleLoginWithGoogle()}
+            >
+              <IconBrandGoogle size={24} /> Login with Google
             </button>
 
             <Link href={"/register"}>

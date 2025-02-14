@@ -88,9 +88,9 @@ export default function RegisterForm() {
             </div>
             <div className="mt-2">
               <input
-                {...register("password")}
-                id="password"
-                name="password"
+                {...register("confirm_password")}
+                id="confirm_password"
+                name="confirm_password"
                 type="password"
                 required
                 autoComplete="current-password"

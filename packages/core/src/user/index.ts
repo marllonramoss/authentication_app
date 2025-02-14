@@ -2,7 +2,7 @@ import { User } from './model/User';
 
 import { useCase_login } from './service/useCase_login';
 import { useCase_register } from './service/useCase_register';
-import { useCase_registerWithGoogle } from './service/useCase_registerWithGoogle';
+import { useCase_loginWithGoogle } from './service/useCase_loginWithGoogle';
 import { useCase_recovery } from './service/useCase_recovery';
 import { useCase_changePassword } from './service/useCase_changePassword';
 
@@ -32,7 +32,7 @@ export type {
 export {
     useCase_login,
     useCase_register,
-    useCase_registerWithGoogle,
+    useCase_loginWithGoogle,
     useCase_recovery,
     useCase_changePassword,
 };

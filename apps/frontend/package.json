@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@authentication/core": "*",
+    "@react-oauth/google": "^0.12.1",
     "@tabler/icons-react": "^3.29.0",
     "@types/axios": "^0.14.4",
     "@types/js-cookie": "^3.0.6",
