@@ -14,17 +14,17 @@ export class useCase_register {
 
     async execute(data: registerInDTO): Promise<registerOutDTO> {
         if (!data.password) {
-            throw new Error('Password is required!');
+            throw new Error('Password is required');
         }
 
         if (!data.email) {
-            throw new Error('Email is required!');
+            throw new Error('Email is required');
         }
 
         const emailExisting = await this.repo.findByEmail(data.email);
 
         if (emailExisting) {
-            throw new Error('User email has already been used');
+            throw new Error('Email has already been used');
         }
 
         const finaldata: User = {
@@ -39,9 +39,11 @@ export class useCase_register {
         const dataToReturn: registerOutDTO = {
             statusCode: 201,
             message: 'Register successful',
-            id: finaldata.id,
-            email: finaldata.email,
-            createdAt: finaldata.createdAt,
+            user: {
+                id: finaldata.id,
+                email: finaldata.email,
+                createdAt: finaldata.createdAt,
+            },
         };
 
         return dataToReturn;
