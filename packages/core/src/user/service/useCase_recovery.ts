@@ -2,6 +2,7 @@ import { port_userRepo } from '../providers/port_userRepo';
 import { port_tokenGenerator } from '../providers/port_tokenGenerator';
 import recoveryOutDTO from '../dtos/recoveryOutDTO';
 import port_emailService from '../providers/port_emailService';
+import recoveryInDTO from '../dtos/recoveryInDTO';
 
 export class useCase_recovery {
     constructor(
@@ -10,13 +11,11 @@ export class useCase_recovery {
         private readonly emailService: port_emailService,
     ) {}
 
-    async execute(data: { email: string }): Promise<recoveryOutDTO> {
-        console.log('EMAIL JOINNED ON USECASE: ', data.email);
-
+    async execute(data: recoveryInDTO): Promise<recoveryOutDTO> {
         const existingEmail = await this.repo.findByEmail(data.email);
 
         if (!existingEmail) {
-            throw new Error('EMAIL_NOT_FOUNDED');
+            throw new Error('Email not founded');
         }
 
         // Gera um token de recuperação de senha
@@ -25,7 +24,11 @@ export class useCase_recovery {
         // Envia o email com o link de recuperação de senha
         const recoveryLink = `http://localhost:3000/reset-password?token=${recoveryToken}`;
 
-        await this.emailService.sendRecoveryEmail(data.email, recoveryLink);
+        try {
+            await this.emailService.sendRecoveryEmail(data.email, recoveryLink);
+        } catch (error) {
+            throw error;
+        }
 
         return {
             statusCode: 200,

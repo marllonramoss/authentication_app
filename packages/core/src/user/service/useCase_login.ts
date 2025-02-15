@@ -15,7 +15,7 @@ export class useCase_login {
         const existingEmail = await this.repo.findByEmail(data.email);
 
         if (!existingEmail) {
-            throw new Error('EMAIL_NOT_FOUNDED');
+            throw new Error('Email not founded');
         }
 
         const validPassword = await this.hasher.compare(
@@ -24,7 +24,7 @@ export class useCase_login {
         );
 
         if (!validPassword) {
-            throw new Error('INVALID_PASSWORD');
+            throw new Error('Invalid password');
         }
 
         const token = this.tokenGenerator.generate(
@@ -38,9 +38,9 @@ export class useCase_login {
             message: 'Login successful',
             token: token,
             user: {
+                id: existingEmail.id,
                 email: existingEmail.email,
                 createdAt: existingEmail.createdAt,
-                googleId: existingEmail.googleId,
             },
         };
     }
