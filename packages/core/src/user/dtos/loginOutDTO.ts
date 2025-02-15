@@ -3,8 +3,8 @@ export default interface loginOutDTO {
     message?: string;
     token: string;
     user: {
+        id: string;
         email: string;
-        googleId?: string;
         createdAt: Date;
     };
 }

@@ -1,3 +1,4 @@
+import recoveryInDTO from '../dtos/recoveryInDTO';
 import { registerOutDTO } from '../dtos/registerOutDTO';
 import { User } from '../model/User';
 
