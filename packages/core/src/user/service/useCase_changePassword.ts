@@ -2,6 +2,8 @@ import { registerOutDTO } from '../dtos/registerOutDTO';
 import { User } from '../model/User';
 import { port_passwordHasher } from '../providers/port_passwordHasher';
 import { port_userRepo } from '../providers/port_userRepo';
+import changePasswordInDTO from '../dtos/changePasswordInDTO';
+import changePasswordOutDTO from '../dtos/changePasswordOutDTO';
 
 export class useCase_changePassword {
     constructor(
@@ -9,13 +11,7 @@ export class useCase_changePassword {
         private readonly hasher: port_passwordHasher,
     ) {}
 
-    async execute(data: { id: string; newPassword: string }): Promise<void> {
-        console.log('JOINNED ON USECASE CHANGE PASSOWRD');
-        console.log(data.id);
-        console.log(data.newPassword);
-
-        console.log('ANTES DO FINDBYID');
-
+    async execute(data: changePasswordInDTO): Promise<changePasswordOutDTO> {
         const _id = data.id;
 
         const _data = {
@@ -42,5 +38,10 @@ export class useCase_changePassword {
         }
 
         await this.repo.change_password(data.id, hashedPassword);
+
+        return {
+            statusCode: 200,
+            message: 'Password change successfully',
+        };
     }
 }

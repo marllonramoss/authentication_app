@@ -18,6 +18,8 @@ import loginOutDTO from './dtos/loginOutDTO';
 import loginInDTO from './dtos/loginInDTO';
 import recoveryOutDTO from './dtos/recoveryOutDTO';
 import recoveryInDTO from './dtos/recoveryInDTO';
+import changePasswordInDTO from './dtos/changePasswordInDTO';
+import changePasswordOutDTO from './dtos/changePasswordOutDTO';
 
 export type {
     User,
@@ -32,6 +34,8 @@ export type {
     loginOutDTO,
     recoveryInDTO,
     recoveryOutDTO,
+    changePasswordInDTO,
+    changePasswordOutDTO,
 };
 export {
     useCase_login,
